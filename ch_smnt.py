@@ -1,11 +1,11 @@
 """
 Veros from scratch
 
-Simulation of a channel with a seamount
+An idealized model of the Benham Bank Seamount using Veros, a Python-based ocean model
 
 Author: Kristine Bantay
 Created on: 01/05/2021
-Last edit: 01/05/2021
+Last edit: 02/03/2021
 
 """
 
@@ -18,28 +18,25 @@ import matplotlib.pyplot as plt
 
 class ch_smnt(VerosSetup):
     """
-    A model of the Benham seamount on idealized channel setting.
+    A model of the Benham Bank Seamount on idealized channel setting.
+"""
 
 
-    """
-
-    """
     simulation = ch_smnt(backend='bohrium')
     simulation.run()
     plt.imshow(simulation.state.psi[..., 0])
     plt.show()
-    """
 
     @veros_method
     def set_parameter(self, vs):
-        vs.nx, vs.ny, vs.nz = (360, 120, 50)
+        vs.nx, vs.ny, vs.nz = (50, 100, 10)                                      #grid size
         vs.coord_degree = True
         vs.enable_cyclic = True
         pass
 
     @veros_method
     def set_initial_conditions(self, vs):
-        vs.u[:, :, :, vs.tau] = np.random.rand(364, 124, 50)
+        vs.u[:, :, :, vs.tau] = np.random.rand(54, 104, 10)
 
         # wind stress forcing
         yt_min = global_min(vs, vs.yt.min())
@@ -69,7 +66,7 @@ class ch_smnt(VerosSetup):
 
     @veros_method
     def set_topography(self, vs):
-        vs.kbot[:, :] = 10
+        vs.kbot[:, :] = 100
         # add a rectangular island somewhere inside the domain
         vs.kbot[10:20, 10:20] = 0
         pass
